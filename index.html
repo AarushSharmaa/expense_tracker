@@ -19,11 +19,11 @@
     <!-- Here, we have added HTML -->
     <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Personal Expense Calculator</span>
+        <span class="navbar-brand mb-0 h1" id="headingTotal"></span>
     </nav>
     <div class="container-fluid bg-light" style="min-height: 100vh">
         <div class="container">
-            <!-- HEADING ELEMENT, ID = "headingTotal" -->
-            <h1 id="headingTotal"></h1>
+
 
 
             <div class="jumbotron mt-4">
@@ -67,7 +67,7 @@
             // get the heading element
             const headingE1 = document.querySelector("#headingTotal");
 
-            // get the reference to description element 
+            // get the reference to inputDescription
             const inputDescEl = document.querySelector("#inputDesc");
 
             // reference to inputAmount
@@ -101,6 +101,7 @@
                 // put the amount and description in object 
                 expenseItem.desc = textDesc;
                 expenseItem.amount = textAmount;
+                expenseItem.moment = new Date(); // current date
 
                 // check if the object is working
                 // console.log(expenseItem);
@@ -135,14 +136,19 @@
                  `
                 */
 
-                const allExpenseHTML = allExpenses.map(expense => createListItem(expense)); // run the function named as createListItem and store the results in allExpenseHTML
+                /*
+                const allExpenseHTML = allExpenses.map(expense => createListItem(expense));
+                // run the function named as createListItem and store the results in allExpenseHTML
 
                 const joinedAllExpenseHTML = allExpenseHTML.join("");
 
                 // console.log(joinedAllExpenseHTML);
 
                 expenseTableEl.innerHTML = joinedAllExpenseHTML;
+                */
 
+                // INSTEAD OF ABOVE 3 lines, we call renderList function
+                renderList(allExpenses);
             }
 
             // Get the btn element
@@ -152,22 +158,68 @@
             element.addEventListener("click", addExpenseToTotal, false);
 
 
-            // View Layer Below
+            // Controller Functions
+
+
+            // getDateString
+            function getDateString(moment) {
+                return moment.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                })
+            }
+
+            // Delete Items
+            function deleteItem(dateValue) {
+                const newArr = [];
+
+                console.log(dateValue);
+
+                for (let i = 0; i < allExpenses.length; i++) {
+                    if (allExpenses[i].moment.valueOf() !== dateValue) {
+                        newArr.push(allExpenses[i]);
+
+                    }
+                }
+
+                renderList(newArr);
+
+            }
+
+            // View Layer Below (everythwing here is on DOM)
+
+            function renderList(newArr) {
+                const allExpenseHTML = newArr.map(expense => createListItem(expense));
+                //console.log(newArr);
+
+                // to print it to the screen 
+                const joinedAllExpenseHTML = allExpenseHTML.join("");
+                expenseTableEl.innerHTML = joinedAllExpenseHTML;
+
+
+            }
+
             function createListItem({
                 desc,
-                amount
+                amount,
+                moment
             }) {
                 return `
                 <li class="list-group-item d-flex justify-content-between">
 							<div class="d-flex flex-column">
 								${desc} 
-								<small class="text-muted">March 11, 2019</small>
+								<small class="text-muted">${getDateString(moment)}</small>
 							</div>
 							<div>
 								<span class="px-5">
 									${amount}
 								</span>
-								<button type="button" class="btn btn-outline-danger btn-sm">
+								<button type="button"  
+                                 class="btn btn-outline-danger btn-sm"
+
+                                
+                                 onclick = "deleteItem(${moment.valueOf()})">
 									<i class="fas fa-trash-alt"></i>
 								</button>
 							</div>
