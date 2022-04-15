@@ -12,13 +12,19 @@
 
     <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous">
     </script>
-
 </head>
 
 <body>
     <!-- Here, we have added HTML -->
+
+    <!-- What we have done via our HTML Codes 
+    1. First, we have taken input fields :inputAmount, inputDescription
+    2. Second, we have placed a button to add these to our output
+    3. At last, we have allocated a div for our display separately
+    -->
     <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Personal Expense Calculator</span>
+        <!-- HEADING TOTAL TO DISPLAY AT TOP, ID = headingTotal-->
         <span class="navbar-brand mb-0 h1" id="headingTotal"></span>
     </nav>
     <div class="container-fluid bg-light" style="min-height: 100vh">
@@ -63,9 +69,17 @@
 
 
         <!-- Here, we have added Javscript -->
+
+
+        <!-- What we have done via our Javascript codes
+    1. Referenced all inputs from HTML world to our JS world 
+    2. 
+
+    -->
         <script>
             // get the heading element
             const headingE1 = document.querySelector("#headingTotal");
+
 
             // get the reference to inputDescription
             const inputDescEl = document.querySelector("#inputDesc");
@@ -95,7 +109,7 @@
                 // read value from inputAmount
                 const textAmount = inputElement.value;
 
-                // read desc from inputDescription
+                // read description from inputDescription
                 const textDesc = inputDescEl.value;
 
                 // put the amount and description in object 
@@ -117,26 +131,38 @@
                 // add that input to totalExpense
                 totalExpense = totalExpense + expense;
 
+                // Below we have done templating 
+                // to display the totalAmount at top 
+
+
                 // set the heading element to totalExpense
+
+                //1st way 
                 // const someText = "The expense for this month is  " + totalExpense;
-                const someText = `Total : ${totalExpense}`
+
+                //2nd way ${ whatever inside this, value is shown in display }
+                const someText = `Total Expense : ${totalExpense}`
                 headingE1.textContent = someText;
 
-                /* IMPORTANT CONCEPTS TO UNDERSTAND ARRAYS 
+                /* IMPORTANT CONCEPTS TO UNDERSTAND ARRAYS abd TEMPLATING
                  show the table here
-                 const data1 = allExpenses[0];
-                 const data2 = allExpenses[1];
+                 const data1 = allExpenses[0]; //data1 is object expenseItem
+                 const data2 = allExpenses[1]; //data2 is object expenseItem
 
                  const data1Text = `  ${data1.amount} :: ${data1.desc}`;
                  const data2Text = `  ${data1.amount} :: ${data2.desc}`;
 
+                 // to show output via text, use textContent
+                 expenseTableEl.textContent = data1Text + data2Text;
+
+                 // to show output in a Table via templating
                 const tableText = `
                  <div>${data1Text}</div>
                  <div>${data2Text}</div>
                  `
-                */
+                // to show output here
+                expenseTableEl.innerHTML = tabletext;
 
-                /*
                 const allExpenseHTML = allExpenses.map(expense => createListItem(expense));
                 // run the function named as createListItem and store the results in allExpenseHTML
 
@@ -187,7 +213,7 @@
 
             }
 
-            // View Layer Below (everythwing here is on DOM)
+            // View Layer Below (everything here is on DOM)
 
             function renderList(newArr) {
                 const allExpenseHTML = newArr.map(expense => createListItem(expense));
